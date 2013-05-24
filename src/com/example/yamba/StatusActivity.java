@@ -25,7 +25,7 @@ public class StatusActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		Debug.startMethodTracing("Yamba.trace");
+		//Debug.startMethodTracing("Yamba.trace");
 		setContentView(R.layout.activity_status);
 		
 		buttonUpdate = (Button) findViewById(R.id.update_button);
@@ -38,7 +38,7 @@ public class StatusActivity extends Activity implements OnClickListener {
 	protected void onStop() {
 		super.onStop();
 		
-		Debug.stopMethodTracing();
+		//Debug.stopMethodTracing();
 	}
 
 	@Override
@@ -84,13 +84,23 @@ public class StatusActivity extends Activity implements OnClickListener {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
-		Intent intent = new Intent(this, UpdaterService.class);
+		Intent intentUpdate = new Intent(this, UpdaterService.class);
+		Intent intentRefresh = new Intent(this, RefreshService.class);
+		Intent intentPrefs = new Intent(this, PrefsActivity.class);
+
+		
 		switch(item.getItemId()) {
 		case R.id.item_start_service:
-			startService(intent);
+			startService(intentUpdate);
 			return true;
 		case R.id.item_stop_service:
-			stopService(intent);
+			stopService(intentUpdate);
+			return true;
+		case R.id.item_refresh:
+			startService(intentRefresh);
+			return true;
+		case R.id.item_prefs:
+			startActivity(intentPrefs);
 			return true;
 		default:
 			return false;
