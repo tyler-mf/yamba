@@ -87,6 +87,7 @@ public class StatusActivity extends Activity implements OnClickListener {
 		Intent intentUpdate = new Intent(this, UpdaterService.class);
 		Intent intentRefresh = new Intent(this, RefreshService.class);
 		Intent intentPrefs = new Intent(this, PrefsActivity.class);
+		Intent intentTimeline = new Intent(this, TimelineActivity.class);
 
 		
 		switch(item.getItemId()) {
@@ -101,6 +102,9 @@ public class StatusActivity extends Activity implements OnClickListener {
 			return true;
 		case R.id.item_prefs:
 			startActivity(intentPrefs);
+			return true;
+		case R.id.item_timeline:
+			startActivity(intentTimeline);
 			return true;
 		default:
 			return false;

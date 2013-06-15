@@ -27,13 +27,13 @@ public class UpdaterService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		running = true;
-		// final int delay = ((YambaApp)getApplication()).prefs.getInt("delay", DELAY);
 		new Thread() {
 			public void run() {
 				try {
 					while (running) {
 						List<Status> timeline = twitter.getPublicTimeline();
 						for (Status status : timeline) {
+							((YambaApp)getApplication()).statusData.insert(status);
 							Log.d(TAG, String.format("%s: %s",
 									status.user.name, status.text));
 						}
