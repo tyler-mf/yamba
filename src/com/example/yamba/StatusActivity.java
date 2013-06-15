@@ -3,10 +3,13 @@ package com.example.yamba;
 import winterwell.jtwitter.Twitter;
 import winterwell.jtwitter.TwitterException;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Debug;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -14,12 +17,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class StatusActivity extends Activity implements OnClickListener {
+	static final String TAG = "StatusActivity";
 	Button buttonUpdate;
 	EditText editStatus;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		//Debug.startMethodTracing("Yamba.trace");
 		setContentView(R.layout.activity_status);
 		
 		buttonUpdate = (Button) findViewById(R.id.update_button);
@@ -29,10 +35,10 @@ public class StatusActivity extends Activity implements OnClickListener {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_status, menu);
-		return true;
+	protected void onStop() {
+		super.onStop();
+		
+		//Debug.stopMethodTracing();
 	}
 
 	@Override
@@ -53,7 +59,7 @@ public class StatusActivity extends Activity implements OnClickListener {
 				Twitter twitter = new Twitter("student","password");
 				twitter.setAPIRootUrl("http://yamba.marakana.com/api");
 				twitter.setStatus(params[0]);
-				return "Susseccfully posted" + params[0];
+				return "Susseccfully posted " + params[0];
 			} catch (TwitterException e) {
 				Log.e("Activity", "Died", e);
 				return "Failed to post" + params[0];
@@ -70,4 +76,38 @@ public class StatusActivity extends Activity implements OnClickListener {
 		
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		Intent intentUpdate = new Intent(this, UpdaterService.class);
+		Intent intentRefresh = new Intent(this, RefreshService.class);
+		Intent intentPrefs = new Intent(this, PrefsActivity.class);
+		Intent intentTimeline = new Intent(this, TimelineActivity.class);
+
+		
+		switch(item.getItemId()) {
+		case R.id.item_start_service:
+			startService(intentUpdate);
+			return true;
+		case R.id.item_stop_service:
+			stopService(intentUpdate);
+			return true;
+		case R.id.item_refresh:
+			startService(intentRefresh);
+			return true;
+		case R.id.item_prefs:
+			startActivity(intentPrefs);
+			return true;
+		case R.id.item_timeline:
+			startActivity(intentTimeline);
+			return true;
+		default:
+			return false;
+		}
+	}
 }
