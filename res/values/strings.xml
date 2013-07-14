@@ -32,4 +32,5 @@
         <item >3600</item>
     </string-array>
         <string name="timeline">Timeline</string>
+        <string name="set_status">Status</string>
 </resources>

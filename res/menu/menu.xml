@@ -2,6 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/item_set_status"
+        android:title="@string/set_status">
+    </item>
+    <item
         android:id="@+id/item_start_service"
         android:title="@string/start_service">
     </item>
